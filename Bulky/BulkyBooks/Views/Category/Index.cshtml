@@ -1,0 +1,40 @@
+﻿@model List<Category>
+@{
+    ViewData["Title"] = "Category List";
+}
+<div class="container">
+    <div class="row pt-3">
+        <div class="col-6"><h1><b>Category List</b></h1></div>
+        <div class="col-6 text-end">
+            <a asp-action="Create" asp-controller="Category" class="btn btn-dark">
+                <i class="bi bi-plus-circle"></i>&nbsp; Create New Category
+            </a>
+        </div>
+    </div>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>
+                    Category Name
+                </th>
+                <th>
+                    Display Order
+                </th>
+                <th>
+                    Action
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var obj in Model)
+            {
+                <tr>
+                    <td>@obj.Name</td>
+                    <td>@obj.DisplayOrder</td>
+                    <td></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
