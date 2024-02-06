@@ -34,7 +34,8 @@
                     <td>@obj.DisplayOrder</td>
                     <td>
                         <div class="w-75 btn-group" role="group">
-                            <a asp-controller="Category" asp-action="Edit" class="btn btn-success">
+                            <a asp-controller="Category" asp-action="Edit" asp-route-id ="@obj.Id" 
+                                class="btn btn-success">
                                 <i class="bi bi-pencil-square"></i> Edit
                             </a>
                             <a asp-controller="Category" asp-action="Delete" class="btn btn-danger">

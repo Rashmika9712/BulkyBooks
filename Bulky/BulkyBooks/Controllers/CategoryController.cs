@@ -37,18 +37,22 @@ namespace BulkyBooks.Controllers
 
         public IActionResult Edit(int? id)
         {
-            if(id == null || id == 0)
-            {
+            if(id == null || id == 0)            
                 return NotFound();
-            }
-            return View();
+            
+            Category? category = _db.Categories.Find(id);
+
+            if (id == null)
+                return NotFound();
+
+            return View(category);
         }
         [HttpPost]
         public IActionResult Edit(Category obj)
         {
             if (ModelState.IsValid)
             {
-                _db.Categories.Add(obj);
+                _db.Categories.Update(obj);
                 _db.SaveChanges();
                 return RedirectToAction("Index");
             }
