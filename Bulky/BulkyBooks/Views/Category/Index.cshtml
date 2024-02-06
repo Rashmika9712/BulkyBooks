@@ -38,7 +38,8 @@
                                 class="btn btn-success">
                                 <i class="bi bi-pencil-square"></i> Edit
                             </a>
-                            <a asp-controller="Category" asp-action="Delete" class="btn btn-danger">
+                            <a asp-controller="Category" asp-action="Delete" asp-route-id="@obj.Id" 
+                                class="btn btn-danger">
                                 <i class="bi bi-trash"></i> Delete
                             </a>
                         </div>
