@@ -39,12 +39,18 @@ namespace BulkyBooks.Controllers
         public IActionResult Edit(int? id)
         {
             if (id == null || id == 0)
+            {
+                TempData["error"] = "Category does not exists!";
                 return NotFound();
+            }
 
             Category? category = _db.Categories.Find(id);
 
             if (id == null)
+            {
+                TempData["error"] = "Category does not exists!";
                 return NotFound();
+            }
 
             return View(category);
         }
@@ -64,12 +70,18 @@ namespace BulkyBooks.Controllers
         public IActionResult Delete(int? id)
         {
             if (id == null || id == 0)
+            {
+                TempData["error"] = "Category does not exists!";
                 return NotFound();
+            }
 
             Category? category = _db.Categories.Find(id);
 
             if (id == null)
+            {
+                TempData["error"] = "Category does not exists!";
                 return NotFound();
+            }
 
             return View(category);
         }
@@ -79,7 +91,10 @@ namespace BulkyBooks.Controllers
             Category? category = _db.Categories.Find(id);
 
             if (category == null)
+            {
+                TempData["error"] = "Category does not exists!";
                 return NotFound();
+            }
 
             _db.Categories.Remove(category);
             _db.SaveChanges();

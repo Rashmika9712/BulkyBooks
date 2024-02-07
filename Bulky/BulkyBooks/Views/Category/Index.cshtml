@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "Category List";
 }
+
 <div class="container">
     <div class="row pt-3">
         <div class="col-6"><h1><b>Category List</b></h1></div>
@@ -34,12 +35,12 @@
                     <td>@obj.DisplayOrder</td>
                     <td>
                         <div class="w-75 btn-group" role="group">
-                            <a asp-controller="Category" asp-action="Edit" asp-route-id ="@obj.Id" 
-                                class="btn btn-success">
+                            <a asp-controller="Category" asp-action="Edit" asp-route-id="@obj.Id"
+                               class="btn btn-success">
                                 <i class="bi bi-pencil-square"></i> Edit
                             </a>
-                            <a asp-controller="Category" asp-action="Delete" asp-route-id="@obj.Id" 
-                                class="btn btn-danger">
+                            <a asp-controller="Category" asp-action="Delete" asp-route-id="@obj.Id"
+                               class="btn btn-danger">
                                 <i class="bi bi-trash"></i> Delete
                             </a>
                         </div>
