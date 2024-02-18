@@ -3,7 +3,7 @@
     ViewData["Title"] = "Product List";
 }
 
-<div class="card shadow border-0 mt-4">
+<div class="card shadow border-0 my-4">
     <div class="card-header bg-dark bg-gradiant ms-0 py-3">
         <div class="row">
             <div class="col-12 text-center">
@@ -25,15 +25,12 @@
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th>
-                            Title
-                        </th>
-                        <th>
-                            Author
-                        </th>
-                        <th>
-                            Action
-                        </th>
+                        <th>Title</th>
+                        <th>ISBN</th>
+                        <th>Price</th>
+                        <th>Author</th>
+                        <th>Category</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -41,7 +38,10 @@
                     {
                         <tr>
                             <td>@obj.Title</td>
+                            <td>@obj.ISBN</td>
+                            <td>@obj.Price</td>
                             <td>@obj.Author</td>
+                            <td></td>
                             <td>
                                 <div class="w-75 btn-group" role="group">
                                     <a asp-controller="Product" asp-action="Edit" asp-route-id="@obj.Id"
