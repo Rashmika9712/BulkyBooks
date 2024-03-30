@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Bulky.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240218124848_Alter_Product_ImageUrl")]
-    partial class Alter_Product_ImageUrl
+    [Migration("20240330130606_Add_Category_n_Product")]
+    partial class Add_Category_n_Product
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -22,7 +22,7 @@ namespace BulkyBooks.Areas.Admin.Controllers
             return View(obj);
         }
 
-        public IActionResult Create()
+        public IActionResult Upsert(int? id)
         {
             ProductVm productVm = new ProductVm()
             {
@@ -34,10 +34,20 @@ namespace BulkyBooks.Areas.Admin.Controllers
                 Product = new Product()
             };
 
-            return View(productVm);
+            if (id == null || id == 0)
+            {
+                //Crete
+                return View(productVm);
+            }
+            else
+            {
+                //Update
+                productVm.Product = _unitOfWork.Product.Get(x => x.Id == id);
+                return View(productVm);
+            }
         }
         [HttpPost]
-        public IActionResult Create(ProductVm obj)
+        public IActionResult Upsert(ProductVm obj, IFormFile? file)
         {
             if (ModelState.IsValid)
             {
@@ -56,37 +66,6 @@ namespace BulkyBooks.Areas.Admin.Controllers
 
                 return View(obj);
             }
-        }
-
-        public IActionResult Edit(int? id)
-        {
-            if (id == null || id == 0)
-            {
-                TempData["error"] = "Product does not exists!";
-                return NotFound();
-            }
-
-            Product? product = _unitOfWork.Product.Get(x => x.Id == id);
-
-            if (id == null)
-            {
-                TempData["error"] = "Product does not exists!";
-                return NotFound();
-            }
-
-            return View(product);
-        }
-        [HttpPost]
-        public IActionResult Edit(Product obj)
-        {
-            if (ModelState.IsValid)
-            {
-                _unitOfWork.Product.Update(obj);
-                _unitOfWork.Save();
-                TempData["success"] = "Product Updated Successfully!";
-                return RedirectToAction("Index");
-            }
-            return View();
         }
 
         public IActionResult Delete(int? id)
