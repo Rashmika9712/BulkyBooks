@@ -3,6 +3,7 @@ using Bulky.Models;
 using Bulky.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Data;
 
 namespace BulkyBooks.Areas.Admin.Controllers
 {
@@ -20,7 +21,8 @@ namespace BulkyBooks.Areas.Admin.Controllers
 
         public IActionResult Index()
         {
-            List<Product> obj = _unitOfWork.Product.GetAll().OrderBy(x => x.Title).ToList();
+            List<Product> obj = _unitOfWork.Product.GetAll(includeProperties: "Category")
+                                                   .OrderBy(x => x.Title).ToList();
             return View(obj);
         }
 
@@ -76,6 +78,10 @@ namespace BulkyBooks.Areas.Admin.Controllers
 
                 if (obj.Product.Id == 0)
                 {
+                    if (file == null)
+                    {
+                        obj.Product.ImageUrl = string.Empty;
+                    }
                     _unitOfWork.Product.Add(obj.Product);
                 }
                 else
@@ -132,5 +138,15 @@ namespace BulkyBooks.Areas.Admin.Controllers
             TempData["success"] = "Product Deleted Successfully!";
             return RedirectToAction("Index");
         }
+
+        #region API Calls
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            List<Product> obj = _unitOfWork.Product.GetAll(includeProperties: "Category")
+                                                   .OrderBy(x => x.Title).ToList();
+            return Json(new { data = obj });
+        }
+        #endregion
     }
 }
