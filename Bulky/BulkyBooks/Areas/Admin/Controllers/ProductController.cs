@@ -104,41 +104,6 @@ namespace BulkyBooks.Areas.Admin.Controllers
             }
         }
 
-        public IActionResult Delete(int? id)
-        {
-            if (id == null || id == 0)
-            {
-                TempData["error"] = "Product does not exists!";
-                return NotFound();
-            }
-
-            Product? product = _unitOfWork.Product.Get(x => x.Id == id);
-
-            if (id == null)
-            {
-                TempData["error"] = "Product does not exists!";
-                return NotFound();
-            }
-
-            return View(product);
-        }
-        [HttpPost, ActionName("Delete")]
-        public IActionResult DeletePost(int? id)
-        {
-            Product? product = _unitOfWork.Product.Get(x => x.Id == id);
-
-            if (product == null)
-            {
-                TempData["error"] = "Product does not exists!";
-                return NotFound();
-            }
-
-            _unitOfWork.Product.Remove(product);
-            _unitOfWork.Save();
-            TempData["success"] = "Product Deleted Successfully!";
-            return RedirectToAction("Index");
-        }
-
         #region API Calls
         [HttpGet]
         public IActionResult GetAll()
@@ -146,6 +111,23 @@ namespace BulkyBooks.Areas.Admin.Controllers
             List<Product> obj = _unitOfWork.Product.GetAll(includeProperties: "Category")
                                                    .OrderBy(x => x.Title).ToList();
             return Json(new { data = obj });
+        }
+
+        [HttpDelete]
+        public IActionResult Delete(int? id)
+        {
+            var productToBeDelete = _unitOfWork.Product.Get(x => x.Id == id);
+            if (productToBeDelete == null)
+                return Json(new { success = false, message = "Error while deleting" });
+
+            var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, productToBeDelete.ImageUrl.TrimStart('\\'));
+            if (System.IO.File.Exists(oldImagePath))
+                System.IO.File.Delete(oldImagePath);
+
+            _unitOfWork.Product.Remove(productToBeDelete);
+            _unitOfWork.Save();
+
+            return Json(new { success = true, message = "Deleted Successfully!" });
         }
         #endregion
     }
