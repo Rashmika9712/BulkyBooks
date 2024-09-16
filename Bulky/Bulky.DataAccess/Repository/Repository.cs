@@ -22,7 +22,7 @@ namespace Bulky.DataAccess.Repository
         public T Get(System.Linq.Expressions.Expression<Func<T, bool>> filter)
         {
             IQueryable<T> query = _dbSet.Where(filter);
-            return query.FirstOrDefault();
+            return query.FirstOrDefault()!;
         }
 
         public IEnumerable<T> GetAll()

@@ -7,7 +7,7 @@
 namespace Bulky.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class Add_Category_n_Product : Migration
+    public partial class Add_Category_and_Product : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

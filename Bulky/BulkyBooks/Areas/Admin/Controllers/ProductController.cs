@@ -38,36 +38,50 @@ namespace BulkyBooks.Areas.Admin.Controllers
 
             if (id == null || id == 0)
             {
-                //Crete
-                return View(productVm);
+                //Create
             }
             else
             {
                 //Update
                 productVm.Product = _unitOfWork.Product.Get(x => x.Id == id);
-                return View(productVm);
             }
+            return View(productVm);
         }
         [HttpPost]
-        public IActionResult Upsert(ProductVm obj, IFormFile? file)
+        public async ValueTask<IActionResult> Upsert(ProductVm obj, IFormFile? file)
         {
             if (ModelState.IsValid)
             {
                 string wwwRootPath = _webHostEnvironment.WebRootPath;
                 if (file != null)
                 {
-                    string fileNme = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
                     string productPath = Path.Combine(wwwRootPath, @"images\product");
 
-                    using (var fileStream = new FileStream(Path.Combine(productPath, fileNme), FileMode.Create))
+                    if (!string.IsNullOrWhiteSpace(obj.Product.ImageUrl))
                     {
-                        file.CopyTo(fileStream);
+                        //delete the old image
+                        var oldImagePath = Path.Combine(wwwRootPath, obj.Product.ImageUrl.TrimStart('\\'));
+                        if (System.IO.File.Exists(oldImagePath))
+                            System.IO.File.Delete(oldImagePath);
                     }
 
-                    obj.Product.ImageUrl = @"\images\product\" + fileNme;
+                    using (var fileStream = new FileStream(Path.Combine(productPath, fileName), FileMode.Create))
+                    {
+                        await file.CopyToAsync(fileStream);
+                    }
+
+                    obj.Product.ImageUrl = @"\images\product\" + fileName;
                 }
 
-                _unitOfWork.Product.Add(obj.Product);
+                if (obj.Product.Id == 0)
+                {
+                    _unitOfWork.Product.Add(obj.Product);
+                }
+                else
+                {
+                    _unitOfWork.Product.Update(obj.Product);
+                }
                 _unitOfWork.Save();
                 TempData["success"] = "Product Created Successfully!";
                 return RedirectToAction("Index");
